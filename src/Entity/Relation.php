@@ -33,7 +33,7 @@ class Relation
     private $note;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Character::class, inversedBy="relations1")
+     * @ORM\ManyToOne(targetEntity=Character::class, inversedBy="relations")
      */
     private $character1;
 

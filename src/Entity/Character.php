@@ -74,9 +74,6 @@ class Character
     {
         $this->notes = new ArrayCollection();
         $this->relations = new ArrayCollection();
-        $this->relations = new ArrayCollection();
-        
-        
     }
 
     public function getId(): ?int
