@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CharacterRepository::class)
+ * @ORM\Table(name="`character`")
  */
 class Character
 {
@@ -25,24 +26,9 @@ class Character
     private $name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string", length=255)
      */
     private $description;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $age;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $updatedAt;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -55,24 +41,38 @@ class Character
     private $occupation;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Campaign::class, inversedBy="character")
+     * @ORM\Column(type="datetime")
      */
-    private $campaign;
+    private $createdAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="character")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private $notes;
+    private $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity=Relation::class, mappedBy="character1")
      */
+    private $realtion;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Relation::class, mappedBy="character2")
+     */
     private $relations;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Campaign::class, inversedBy="characters")
+     */
+    private $campaign;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $age;
 
     public function __construct()
     {
-        $this->notes = new ArrayCollection();
+        $this->realtion = new ArrayCollection();
         $this->relations = new ArrayCollection();
     }
 
@@ -105,14 +105,26 @@ class Character
         return $this;
     }
 
-    public function getAge(): ?int
+    public function getFaction(): ?string
     {
-        return $this->age;
+        return $this->faction;
     }
 
-    public function setAge(int $age): self
+    public function setFaction(string $faction): self
     {
-        $this->age = $age;
+        $this->faction = $faction;
+
+        return $this;
+    }
+
+    public function getOccupation(): ?string
+    {
+        return $this->occupation;
+    }
+
+    public function setOccupation(string $occupation): self
+    {
+        $this->occupation = $occupation;
 
         return $this;
     }
@@ -141,26 +153,62 @@ class Character
         return $this;
     }
 
-    public function getFaction(): ?string
+    /**
+     * @return Collection|Relation[]
+     */
+    public function getRealtion(): Collection
     {
-        return $this->faction;
+        return $this->realtion;
     }
 
-    public function setFaction(string $faction): self
+    public function addRealtion(Relation $realtion): self
     {
-        $this->faction = $faction;
+        if (!$this->realtion->contains($realtion)) {
+            $this->realtion[] = $realtion;
+            $realtion->setCharacter1($this);
+        }
 
         return $this;
     }
 
-    public function getOccupation(): ?string
+    public function removeRealtion(Relation $realtion): self
     {
-        return $this->occupation;
+        if ($this->realtion->removeElement($realtion)) {
+            // set the owning side to null (unless already changed)
+            if ($realtion->getCharacter1() === $this) {
+                $realtion->setCharacter1(null);
+            }
+        }
+
+        return $this;
     }
 
-    public function setOccupation(string $occupation): self
+    /**
+     * @return Collection|Relation[]
+     */
+    public function getRelations(): Collection
     {
-        $this->occupation = $occupation;
+        return $this->relations;
+    }
+
+    public function addRelation(Relation $relation): self
+    {
+        if (!$this->relations->contains($relation)) {
+            $this->relations[] = $relation;
+            $relation->setCharacter2($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelation(Relation $relation): self
+    {
+        if ($this->relations->removeElement($relation)) {
+            // set the owning side to null (unless already changed)
+            if ($relation->getCharacter2() === $this) {
+                $relation->setCharacter2(null);
+            }
+        }
 
         return $this;
     }
@@ -177,64 +225,15 @@ class Character
         return $this;
     }
 
-    /**
-     * @return Collection|Note[]
-     */
-    public function getNotes(): Collection
+    public function getAge(): ?int
     {
-        return $this->notes;
+        return $this->age;
     }
 
-    public function addNote(Note $note): self
+    public function setAge(int $age): self
     {
-        if (!$this->notes->contains($note)) {
-            $this->notes[] = $note;
-            $note->setCharacter($this);
-        }
+        $this->age = $age;
 
         return $this;
     }
-
-    public function removeNote(Note $note): self
-    {
-        if ($this->notes->removeElement($note)) {
-            // set the owning side to null (unless already changed)
-            if ($note->getCharacter() === $this) {
-                $note->setCharacter(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Relation[]
-     */
-    public function getRelations(): Collection
-    {
-        return $this->relations;
-    }
-
-    public function addRelations(Relation $relations): self
-    {
-        if (!$this->relations->contains($relations)) {
-            $this->relations[] = $relations;
-            $relations->setCharacter1($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRelations(Relation $relations): self
-    {
-        if ($this->relations->removeElement($relations)) {
-            // set the owning side to null (unless already changed)
-            if ($relations->getCharacter1() === $this) {
-                $relations->setCharacter1(null);
-            }
-        }
-
-        return $this;
-    }
-
 }

@@ -33,15 +33,14 @@ class Relation
     private $note;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Character::class, inversedBy="relations")
+     * @ORM\ManyToOne(targetEntity=Character::class, inversedBy="realtion")
      */
     private $character1;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Character::class, inversedBy="relations2")
+     * @ORM\ManyToOne(targetEntity=Character::class, inversedBy="relations")
      */
     private $character2;
-
 
     public function getId(): ?int
     {
@@ -107,5 +106,4 @@ class Relation
 
         return $this;
     }
-
-}  
+}

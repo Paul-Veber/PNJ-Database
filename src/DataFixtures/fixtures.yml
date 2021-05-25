@@ -1,20 +1,20 @@
 App\Entity\Campaign:
-    campaign_{1..5}:
-        name: '<username()>'
-        description: '<text(200)>'
-        game: '<word()>'
+  campaign_{1..5}:
+    name: "<username()>"
+    description: "<text(200)>"
+    game: "<word()>"
 
 App\Entity\Scenario:
-    scenario_{1..10}:
-        name: '<username()>'
-        description: '<text(200)>'
-        campaign: '@campaign*'
+  scenario_{1..10}:
+    name: "<username()>"
+    description: "<text(200)>"
+    campaign: "@campaign*"
 
 App\Entity\Note:
-    note_{1..20}:
-        name: '<username()>'
-        content: '<text(200)>'
-        scenario: '@scenario*'
+  note_{1..20}:
+    name: "<username()>"
+    content: "<text(200)>"
+    scenario: "@scenario*"
 
 App\Entity\Character:
     character_{1..10}:
@@ -24,14 +24,13 @@ App\Entity\Character:
         age: '<numberBetween(1,100)>'
         faction: '<word()>'
         occupation: '<word()>'
-        createdAt: '<dateTimeBetween("-4 years", "now")>'
+        createdAt: '<dateTimeBetween("-2 years", "now")>'
         updatedAt: '<dateTimeBetween($createdAt, "now")>'
 
 App\Entity\Relation:
-    relation_{1..5}:
-      score: '<numberBetween(1,100)>'
-      type: '<word()>'
-      note: '<text(200)>'
-      character1: '@character*'
-      character2: '@character*'
-      
+  relation_{1..5}:
+    score: "<numberBetween(1,100)>"
+    type: "<word()>"
+    note: "<text(200)>"
+    character1: "@character*"
+    character2: "@character*"

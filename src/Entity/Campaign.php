@@ -49,11 +49,17 @@ class Campaign
      */
     private $notes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Character::class, mappedBy="campaign")
+     */
+    private $characters;
+
     public function __construct()
     {
         $this->scenario = new ArrayCollection();
         $this->character = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->characters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -185,5 +191,13 @@ class Campaign
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Character[]
+     */
+    public function getCharacters(): Collection
+    {
+        return $this->characters;
     }
 }
